@@ -1,0 +1,4 @@
+cohort,n,events,event_rate,median_followup_days
+Full public clinical cohort,531,54,0.1016949152542373,518.0
+TDI analysis cohort,270,27,0.1,437.0
+TDI cohort with baseline LVEF >=50%,261,26,0.09961685823754789,441.0

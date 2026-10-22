@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this analysis code, please cite the accompanying manuscript and the original BC_cardiotox dataset."
+title: "Mechanical Transition Instability in Cardio-Oncology"
+type: software
+authors:
+  - family-names: Raghavan
+    given-names: Dharini
+repository-code: "https://github.com/rdharini2001/MTI-CardioOncology"
+license: MIT
+version: 1.0.0
+date-released: 2026-10-22
