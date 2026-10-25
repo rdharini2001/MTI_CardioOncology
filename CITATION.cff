@@ -1,11 +1,18 @@
 cff-version: 1.2.0
-message: "If you use this analysis code, please cite the accompanying manuscript and the original BC_cardiotox dataset."
-title: "Mechanical Transition Instability in Cardio-Oncology"
+message: "If you use this repository, please cite the accompanying manuscript and the original BC_cardiotox dataset."
+title: "Pretreatment Tissue Doppler Mechanical Transition Instability and Subsequent Cancer Therapy-Related Cardiac Dysfunction in HER2-Positive Breast Cancer"
 type: software
 authors:
   - family-names: Raghavan
     given-names: Dharini
-repository-code: "https://github.com/rdharini2001/MTI-CardioOncology"
+repository-code: "https://github.com/rdharini2001/MTI_CardioOncology"
+url: "https://rdharini2001.github.io/MTI_CardioOncology/"
 license: MIT
 version: 1.0.0
-date-released: 2026-10-22
+date-released: 2026-10-25
+keywords:
+  - cardio-oncology
+  - echocardiography
+  - tissue Doppler imaging
+  - cardiotoxicity
+  - mechanical transition instability

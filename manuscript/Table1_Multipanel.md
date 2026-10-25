@@ -1,4 +1,4 @@
-# Table 1. Cohort characteristics, MTI phenotype, cross-validated performance, and association with CTRCD
+# Table 1. Cohort characteristics, MTI phenotype, validation, comparator models, and added clinical value
 
 ## Panel A. Pretreatment TDI analysis cohort
 
@@ -18,40 +18,77 @@
 | Prior anthracycline exposure | 29/248 (11.7%) | 7/24 (29.2%) | 22/224 (9.8%) |
 | Prior anti-HER2 exposure | 7/248 (2.8%) | 3/24 (12.5%) | 4/224 (1.8%) |
 
-Values are median [IQR] or n/N (%). Binary treatment/comorbidity variables contain missing values in the public dataset; denominators are shown explicitly.
+Values are median [IQR] or n/N (%). Denominators are shown for variables with missing values.
 
 ## Panel B. Four-component Mechanical Transition Instability phenotype
 
-| MTI component | Operational meaning | CTRCD median [IQR] | No CTRCD median [IQR] | Event-oriented AUROC (95% CI) | P |
+| MTI component | Clinical interpretation | CTRCD median [IQR] | No CTRCD median [IQR] | AUROC (95% CI) | P |
 |---|---|---:|---:|---:|---:|
-| Transition slope deficit | Reduced steepness from peak systolic velocity toward zero | 120.5 [103.3-164.1] | 151.0 [122.4-181.9] | 0.650 (0.528-0.773) | 0.011 |
-| Transition curvature deficit | Blunting of the systolic-to-relaxation bend | 742.0 [540.3-930.9] | 909.9 [717.7-1146.5] | 0.652 (0.531-0.766) | 0.010 |
-| Early-relaxation latency | Delay from systolic termination to E′ peak | 0.175 [0.150-0.200] | 0.152 [0.132-0.175] | 0.632 (0.510-0.742) | 0.024 |
-| E′ attenuation | Reduced absolute E′ peak velocity | 9.15 [7.89-10.48] | 10.51 [8.11-12.59] | 0.621 (0.519-0.714) | 0.039 |
+| Transition slope deficit | Slower resolution of systolic velocity | 120.5 [103.3-164.1] | 151.0 [122.4-181.9] | 0.650 (0.528-0.773) | 0.011 |
+| Transition curvature deficit | Blunted systolic-to-relaxation bend | 742.0 [540.3-930.9] | 909.9 [717.7-1146.5] | 0.652 (0.531-0.766) | 0.010 |
+| Early-relaxation latency | Later E′ after systolic termination | 0.175 [0.150-0.200] | 0.152 [0.132-0.175] | 0.632 (0.510-0.742) | 0.024 |
+| E′ attenuation | Smaller early-diastolic velocity | 9.15 [7.89-10.48] | 10.51 [8.11-12.59] | 0.621 (0.519-0.714) | 0.039 |
 
-P values are exploratory two-sided Mann-Whitney tests. Higher oriented component values indicate greater abnormality when constructing MTI.
+P values are exploratory two-sided Mann-Whitney tests. Components were oriented so that higher standardized values indicated greater abnormality in the MTI score.
 
-## Panel C. Repeated cross-fitted discrimination
+## Panel C. Primary cross-fitted performance and time-to-event association
 
-| Model | AUROC (95% CI) | AUPRC (95% CI) | Harrell C-index (95% CI) | 1-y AUROC |
-|---|---:|---:|---:|---:|
-| MTI | 0.695 (0.590-0.794) | 0.192 (0.141-0.321) | 0.677 (0.570-0.784) | 0.657 |
-| Baseline LVEF | 0.657 (0.549-0.759) | 0.166 (0.121-0.281) | 0.678 (0.578-0.767) | 0.672 |
-| Published E′ timing/velocity comparator | 0.663 (0.574-0.747) | 0.150 (0.120-0.241) | 0.660 (0.570-0.750) | 0.637 |
-| MTI + LVEF | 0.712 (0.608-0.807) | 0.211 (0.153-0.357) | 0.715 (0.611-0.810) | 0.707 |
+| Analysis | Estimate |
+|---|---|
+| MTI AUROC | 0.695 (95% CI, 0.590-0.794) |
+| MTI AUPRC | 0.192 (95% CI, 0.141-0.321) |
+| MTI Harrell C-index | 0.677 (95% CI, 0.570-0.784) |
+| Baseline LVEF AUROC | 0.657 (95% CI, 0.549-0.759) |
+| Published E′ timing/velocity comparator AUROC | 0.663 (95% CI, 0.574-0.747) |
+| MTI + LVEF AUROC | 0.712 (95% CI, 0.608-0.807) |
+| MTI + LVEF C-index | 0.715 (95% CI, 0.611-0.810) |
+| Paired C-index difference, MTI + LVEF vs LVEF | +0.037 (95% CI, -0.059 to 0.137) |
+| MTI HR per 1 SD, unadjusted | 2.37 (95% CI, 1.49-3.78); P<0.001 |
+| MTI HR per 1 SD, adjusted for LVEF | 2.20 (95% CI, 1.36-3.55); P=0.001 |
+| MTI HR per 1 SD, adjusted for age + LVEF + treatment | 1.95 (95% CI, 1.19-3.18); P=0.008 |
+| Preserved LVEF sensitivity cohort, MTI HR per 1 SD | 2.22 (95% CI, 1.41-3.51); P<0.001 |
 
-The paired difference for MTI + LVEF versus LVEF was +0.055 for AUROC (95% CI, -0.040 to 0.153) and +0.037 for C-index (95% CI, -0.059 to 0.137); superiority was not established.
+Repeated prediction metrics used 100 stratified 5-fold cross-validation repeats. All preprocessing and model fitting were restricted to training folds.
 
-## Panel D. Association with time to CTRCD and robustness
+## Panel D. Baseline model comparisons
 
-| Analysis | n / events | MTI HR per 1 SD (95% CI) | P |
-|---|---:|---:|---:|
-| MTI unadjusted | 270 / 27 | 2.37 (1.49-3.78) | <0.001 |
-| Adjusted for LVEF | 270 / 27 | 2.20 (1.36-3.55) | 0.001 |
-| Adjusted for age + LVEF | 270 / 27 | 2.19 (1.34-3.58) | 0.002 |
-| Adjusted for age + LVEF + anthracycline + anti-HER2 | 248 / 24 | 1.95 (1.19-3.18) | 0.008 |
-| Baseline LVEF >=50%, adjusted for LVEF | 261 / 26 | 2.22 (1.41-3.51) | <0.001 |
+| Model | AUROC (95% CI) | AUPRC (95% CI) |
+|---|---:|---:|
+| MTI + LVEF | 0.705 (0.598-0.804) | 0.213 (0.150-0.345) |
+| Clinical + MTI | 0.704 (0.590-0.806) | 0.235 (0.159-0.392) |
+| MTI | 0.684 (0.566-0.790) | 0.186 (0.134-0.306) |
+| Clinical model | 0.659 (0.554-0.764) | 0.181 (0.123-0.321) |
+| Fractional shortening | 0.658 (0.557-0.747) | 0.156 (0.120-0.237) |
+| Published E′ timing/velocity metric | 0.648 (0.560-0.732) | 0.141 (0.114-0.211) |
+| LVEF | 0.645 (0.536-0.745) | 0.156 (0.118-0.254) |
+| Age + LVEF | 0.633 (0.518-0.739) | 0.152 (0.114-0.244) |
+| E′ amplitude | 0.613 (0.505-0.704) | 0.138 (0.104-0.228) |
+| Expanded TDI landmarks | 0.601 (0.511-0.693) | 0.130 (0.104-0.203) |
+| E′ timing | 0.592 (0.465-0.707) | 0.147 (0.107-0.233) |
+| S′ + E′ + A′ landmarks | 0.592 (0.483-0.696) | 0.135 (0.103-0.231) |
+| FPCA-5* | 0.619 | 0.138 |
+| Waveform ridge-25* | 0.533 | 0.106 |
 
-CTRCD occurred in 5/90, 6/90, and 16/90 women in increasing MTI tertiles. A restricted-cubic-spline model showed no evidence of departure from a linear MTI-risk association (P for nonlinearity=0.999). In an exploratory surveillance-efficiency analysis using held-out MTI + LVEF risk rankings, the highest-risk 20% contained 13/27 future events (48.1%) and had PPV 24.1%, compared with 10.0% cohort prevalence. Across Savitzky-Golay windows of 21 to 61 samples, MTI AUROC ranged from 0.686 to 0.710 and C-index from 0.673 to 0.694. Women with complete TDI differed from women without processed TDI in age (SMD 0.45), follow-up duration (SMD -0.41), anti-HER2 exposure (SMD -0.34), and hypertension (SMD 0.22), while CTRCD prevalence was similar (SMD -0.01).
+Clinical model: age, LVEF, anthracycline therapy, and anti-HER2 therapy. *FPCA-5 and waveform ridge-25 used 20 repeated 5-fold cross-validation because of computational cost; all other benchmark models used 100 repeats.
 
-Abbreviations: AUPRC, area under the precision-recall curve; AUROC, area under the receiver-operating-characteristic curve; CTRCD, cancer therapy-related cardiac dysfunction; HR, hazard ratio; LVEF, left ventricular ejection fraction; MTI, Mechanical Transition Instability; TDI, Tissue Doppler imaging.
+## Panel E. Exploratory 1-year added-value and preserved-LVEF analyses
+
+| Analysis | Result |
+|---|---|
+| Known 1-year status | 172 women / 16 events |
+| LVEF AUROC at 1 y | 0.652 |
+| MTI + LVEF AUROC at 1 y | 0.698 |
+| Continuous NRI, LVEF → MTI + LVEF | +0.378 (95% CI, -0.122 to 0.869) |
+| IDI, LVEF → MTI + LVEF | +0.015 (95% CI, -0.003 to 0.034) |
+| Clinical model AUROC at 1 y | 0.618 |
+| Clinical + MTI AUROC at 1 y | 0.653 |
+| Clinical model AUPRC → Clinical + MTI AUPRC | 0.144 → 0.175 |
+| Net benefit at 10% 1-y threshold, LVEF | 0.014 |
+| Net benefit at 10% 1-y threshold, MTI + LVEF | 0.032 |
+| Baseline LVEF ≥50%, highest MTI tertile | 15/83 events (18.1%) |
+| Baseline LVEF ≥50%, lower two MTI tertiles | 11/178 events (6.2%) |
+| Highest vs lower MTI tertiles, LVEF-adjusted HR | 3.38 (95% CI, 1.55-7.38); P=0.002 |
+
+NRI, IDI, decision-curve, and tertile analyses are exploratory. There are no validated absolute CTRCD risk categories or MTI cutoffs in this cohort.
+
+Abbreviations: AUPRC, area under the precision-recall curve; AUROC, area under the receiver-operating-characteristic curve; CTRCD, cancer therapy-related cardiac dysfunction; FPCA, functional principal component analysis; HR, hazard ratio; IDI, integrated discrimination improvement; LVEF, left ventricular ejection fraction; MTI, Mechanical Transition Instability; NRI, net reclassification improvement; TDI, Tissue Doppler imaging.

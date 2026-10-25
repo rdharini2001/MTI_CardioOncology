@@ -1,9 +1,15 @@
-# Data
+# Source data
 
-This repository does not redistribute patient-level BC_cardiotox data.
+Patient-level BC_cardiotox data are not redistributed in this repository.
 
-Download the public source dataset from Figshare: https://doi.org/10.6084/m9.figshare.22650748.v4
+Download the original dataset from Figshare:
 
-Place `BC_cardiotox_clinical_and_functional_variables.csv` in this directory before running the analysis.
+- https://doi.org/10.6084/m9.figshare.22650748.v4
 
-The source dataset and accompanying article are released under CC BY 4.0. See the original data descriptor for terms and attribution.
+Place the downloaded file at:
+
+```text
+data/BC_cardiotox_clinical_and_functional_variables.csv
+```
+
+The original dataset is released under CC BY 4.0. Cite the source data publication and follow the original license terms.

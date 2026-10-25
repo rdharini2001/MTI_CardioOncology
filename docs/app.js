@@ -1,29 +1,94 @@
 const NS='http://www.w3.org/2000/svg';
-const C={teal:'#42c6c7',orange:'#df7a45',muted:'#789098',grid:'#20343a',text:'#d9e5e7',bg:'#091419'};
-let D;
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const COLORS={teal:'#087f87',teal2:'#43b6bc',orange:'#e55f2a',orange2:'#f3a27e',ink:'#102533',muted:'#6f828c',grid:'#e8eef0',line:'#9aabb2'};
+let DATA;
+const $=s=>document.querySelector(s); const $$=s=>[...document.querySelectorAll(s)];
 
-fetch('assets/study-data.json').then(r=>r.json()).then(d=>{D=d;boot();});
-function boot(){setupNav(); renderMetrics(); miniWave(); renderWave(); renderComponents(); renderDecile(); setupRisk(); renderModelBars(); renderForest();}
-function setupNav(){
-  $$('.nav-item').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
-  $$('.nav-jump').forEach(b=>b.onclick=()=>showTab(b.dataset.target));
+fetch('assets/study-data.json').then(r=>r.json()).then(d=>{DATA=d;init();}).catch(err=>{console.error(err);document.body.classList.add('data-error');});
+
+function init(){
+  setupReveal(); drawHero(); drawWave(); renderComponents(); drawDecile(); setupMetricTabs(); renderModelBars('auroc'); renderForest(); setupRisk();
 }
-function showTab(id){$$('.tab').forEach(t=>t.classList.toggle('active',t.id===id));$$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));window.scrollTo({top:0,behavior:'smooth'});}
-function renderMetrics(){const h=D.headline; const items=[['TDI cohort','270 women','27 CTRCD events',''],['Adjusted MTI hazard',h.mti_hr_lvef.toFixed(2)+'×','95% CI '+h.mti_hr_lvef_ci.join('–'),'accent'],['Cross-fitted AUROC',h.combo_auc.toFixed(3),'MTI + LVEF','accent'],['Top-risk 20%','48.1%','of future events captured','hot']];$('#metrics').innerHTML=items.map(x=>`<div class="metric ${x[3]}"><span>${x[0]}</span><b>${x[1]}</b><small>${x[2]}</small></div>`).join('');}
-function miniWave(){const ph=D.phase,w=D.waveforms['No CTRCD'].median;const svg=mk('svg',{viewBox:'0 0 420 150'});svg.appendChild(mk('path',{d:path(ph,w,16,404,15,135,-17,12),class:'series-teal'}));const i0=ph.findIndex(x=>x>.45),i1=ph.findIndex(x=>x>.72);svg.appendChild(mk('path',{d:path(ph.slice(i0,i1),w.slice(i0,i1),16,404,15,135,-17,12),class:'series-orange hot'}));$('#miniWave').append(svg);}
-function mk(tag,a={}){const e=document.createElementNS(NS,tag);Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v));return e;}
-function path(x,y,x0,x1,y0,y1,ymin,ymax){return y.map((v,i)=>`${i?'L':'M'}${sx(x[i],x0,x1).toFixed(1)} ${sy(v,y0,y1,ymin,ymax).toFixed(1)}`).join(' ')}
-function sx(v,a,b){return a+v*(b-a)} function sy(v,a,b,min,max){return b-(v-min)/(max-min)*(b-a)}
-function smooth(arr,k){if(k<=1)return arr;const h=Math.floor(k/2);return arr.map((_,i)=>{let s=0,n=0;for(let j=Math.max(0,i-h);j<=Math.min(arr.length-1,i+h);j++){s+=arr[j];n++}return s/n})}
-function axes(svg,w=920,h=430,ymin=-18,ymax=14){[0,.2,.4,.6,.8,1].forEach(v=>{let x=sx(v,68,w-22);svg.append(mk('line',{x1:x,y1:25,x2:x,y2:h-48,class:'grid'}));let t=mk('text',{x:x,y:h-25,'text-anchor':'middle',class:'tick-label'});t.textContent=v.toFixed(1);svg.append(t)});[-15,-10,-5,0,5,10].forEach(v=>{let y=sy(v,25,h-48,ymin,ymax);svg.append(mk('line',{x1:68,y1:y,x2:w-22,y2:y,class:'grid'}));let t=mk('text',{x:58,y:y+3,'text-anchor':'end',class:'tick-label'});t.textContent=v;svg.append(t)});let xt=mk('text',{x:w/2,y:h-5,'text-anchor':'middle',class:'axis-label'});xt.textContent='Normalized cardiac cycle';svg.append(xt);let yt=mk('text',{x:14,y:h/2,transform:`rotate(-90 14 ${h/2})`,'text-anchor':'middle',class:'axis-label'});yt.textContent='Myocardial velocity (cm/s)';svg.append(yt);}
-function bandPath(x,lo,hi,x0,x1,y0,y1,min,max){let a=hi.map((v,i)=>`${i?'L':'M'}${sx(x[i],x0,x1)} ${sy(v,y0,y1,min,max)}`).join(' ');let b=lo.map((v,i)=>`L${sx(x[lo.length-1-i],x0,x1)} ${sy(lo[lo.length-1-i],y0,y1,min,max)}`).join(' ');return a+b+' Z'}
-function renderWave(){const svg=$('#waveChart');svg.innerHTML='';axes(svg);let mode=$('#groupToggle .on')?.dataset.series||'both',k=+$(`#smoothSlider`).value;let ph=D.phase;[['No CTRCD','teal'],['CTRCD','orange']].forEach(([name,col])=>{if(mode!=='both'&&mode!==name)return;let z=D.waveforms[name], med=smooth(z.median,k),q1=smooth(z.q1,k),q3=smooth(z.q3,k);svg.append(mk('path',{d:bandPath(ph,q1,q3,68,898,25,382,-18,14),class:`band-${col}`}));svg.append(mk('path',{d:path(ph,med,68,898,25,382,-18,14),class:`series-${col}`}));});let e=mk('text',{x:570,y:365,class:'tick-label'});e.textContent='E′ region';e.setAttribute('fill',C.orange);svg.append(e);}
-$('#groupToggle').addEventListener('click',e=>{if(e.target.tagName==='BUTTON'){$$('#groupToggle button').forEach(b=>b.classList.remove('on'));e.target.classList.add('on');renderWave();}});$('#smoothSlider').addEventListener('input',e=>{$('#smoothValue').textContent=e.target.value==='1'?'raw aggregate':`moving mean ${e.target.value}`;renderWave();});
-function renderComponents(){const desc=[['Transition slope deficit','How slowly systolic velocity resolves toward zero.'],['Transition curvature deficit','How blunted the mechanical bend is as systole gives way to relaxation.'],['Early-relaxation latency','How long E′ is delayed after systolic termination.'],['E′ attenuation','How reduced the early-diastolic velocity magnitude is.']];$('#componentList').innerHTML=desc.map((d,i)=>`<div class="component-item ${i===0?'active':''}" data-i="${i}"><b>0${i+1}</b>${d[0]}</div>`).join('');const show=i=>{let c=D.components[i],d=desc[i];$('#componentDetail').innerHTML=`<strong>${d[0]}</strong>${d[1]}<br><br><span style="color:#df7a45">CTRCD median ${c.event.median}</span> · No CTRCD median ${c.nonevent.median}`;};show(0);$$('.component-item').forEach(x=>x.onclick=()=>{$$('.component-item').forEach(z=>z.classList.remove('active'));x.classList.add('active');show(+x.dataset.i)});}
-function renderDecile(){let d=D.waveforms.deciles[+$('#decileSlider').value-1],svg=$('#decileChart');svg.innerHTML='';axes(svg,920,300,-18,14);svg.append(mk('path',{d:path(D.phase,d.waveform,68,898,25,252,-18,14),class:'series-teal'}));$('#decileLabel').textContent=d.decile;$('#decileCaption').textContent=`Decile ${d.decile}: n=${d.n}, descriptive median MTI ${d.median_mti}, observed CTRCD rate ${(100*d.event_rate).toFixed(1)}%. Deciles are descriptive and are not clinical cutoffs.`;}
-$('#decileSlider').addEventListener('input',renderDecile);
-function setupRisk(){renderRisk(20);$('#riskSlider').addEventListener('input',e=>renderRisk(+e.target.value));}
-function renderRisk(p){let row=D.risk_capture.find(r=>Math.round(r.fraction*100)===p);$('#fractionText').textContent=p+'%';$('#selectedN').textContent=row.selected_n;$('#captureText').textContent=(row.event_capture*100).toFixed(1)+'%';$('#ppvText').textContent=(row.ppv*100).toFixed(1)+'%';$('#capturedCount').textContent=`${row.events} of ${D.meta.tdi_events}`;let svg=$('#captureChart');svg.innerHTML='';let w=920,h=320;[0,.25,.5,.75,1].forEach(v=>{let x=sx(v,60,w-20);svg.append(mk('line',{x1:x,y1:20,x2:x,y2:h-45,class:'grid'}));let t=mk('text',{x:x,y:h-20,'text-anchor':'middle',class:'tick-label'});t.textContent=Math.round(v*100)+'%';svg.append(t);let y=sy(v,20,h-45,0,1);svg.append(mk('line',{x1:60,y1:y,x2:w-20,y2:y,class:'grid'}));let tt=mk('text',{x:50,y:y+3,'text-anchor':'end',class:'tick-label'});tt.textContent=Math.round(v*100)+'%';svg.append(tt)});let x=D.risk_capture.map(r=>r.fraction),y=D.risk_capture.map(r=>r.event_capture);svg.append(mk('path',{d:path(x,y,60,w-20,20,h-45,0,1),class:'series-teal'}));svg.append(mk('line',{x1:60,y1:h-45,x2:w-20,y2:20,stroke:'#42535a','stroke-dasharray':'5 6'}));let cx=sx(row.fraction,60,w-20),cy=sy(row.event_capture,20,h-45,0,1);svg.append(mk('circle',{cx,cy,r:6,fill:C.orange}));let xt=mk('text',{x:w/2,y:h-2,'text-anchor':'middle',class:'axis-label'});xt.textContent='Fraction of cohort selected for intensified surveillance';svg.append(xt);let yt=mk('text',{x:12,y:h/2,transform:`rotate(-90 12 ${h/2})`,'text-anchor':'middle',class:'axis-label'});yt.textContent='Fraction of subsequent events captured';svg.append(yt);}
-function renderModelBars(){$('#modelBars').innerHTML=D.model_performance.map(m=>`<div class="bar-row"><span>${m.model}</span><div class="bar-track"><div class="bar-fill" style="width:${m.auc*100}%"></div></div><b>${m.auc.toFixed(3)}</b></div>`).join('')+'<div style="font-size:9px;color:#60777d;margin-top:5px">Bars show cross-fitted AUROC.</div>';}
-function renderForest(){const min=.5,max=4;let pos=v=>((Math.log(v)-Math.log(min))/(Math.log(max)-Math.log(min))*100);$('#forest').innerHTML=D.cox.map(r=>`<div class="forest-row"><span>${r.label}</span><div class="forest-track"><i class="ci" style="left:${pos(r.lo)}%;width:${pos(r.hi)-pos(r.lo)}%"></i><i class="hr-dot" style="left:${pos(r.hr)}%"></i></div><b>${r.hr.toFixed(2)} (${r.lo.toFixed(2)}–${r.hi.toFixed(2)})</b></div>`).join('')+'<div style="font-size:9px;color:#60777d;margin-top:6px">Hazard ratio per 1-SD higher MTI. Reference HR=1.</div>';}
+
+function setupReveal(){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.08});
+  $$('.reveal').forEach(x=>io.observe(x));
+}
+
+function svgEl(tag,attrs={}){const e=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(attrs))e.setAttribute(k,v);return e;}
+function sx(v,x0,x1){return x0+v*(x1-x0)}
+function sy(v,y0,y1,min,max){return y1-(v-min)/(max-min)*(y1-y0)}
+function path(x,y,x0,x1,y0,y1,min,max){return y.map((v,i)=>`${i?'L':'M'}${sx(x[i],x0,x1).toFixed(1)} ${sy(v,y0,y1,min,max).toFixed(1)}`).join(' ')}
+function bandPath(x,mean,sd,x0,x1,y0,y1,min,max){
+  const hi=mean.map((v,i)=>v+sd[i]),lo=mean.map((v,i)=>v-sd[i]);
+  let p=hi.map((v,i)=>`${i?'L':'M'}${sx(x[i],x0,x1).toFixed(1)} ${sy(v,y0,y1,min,max).toFixed(1)}`).join(' ');
+  for(let i=lo.length-1;i>=0;i--)p+=` L${sx(x[i],x0,x1).toFixed(1)} ${sy(lo[i],y0,y1,min,max).toFixed(1)}`;
+  return p+' Z';
+}
+function addText(svg,text,x,y,cls,anchor='middle'){const t=svgEl('text',{x,y,class:cls,'text-anchor':anchor});t.textContent=text;svg.append(t);return t}
+
+function drawHero(){
+  const svg=$('#heroWave'),ph=DATA.phase,w=DATA.waveforms['No CTRCD'].mean;svg.innerHTML='';
+  [0,.25,.5,.75,1].forEach(v=>svg.append(svgEl('line',{x1:sx(v,25,695),x2:sx(v,25,695),y1:22,y2:330,class:'hero-gridline'})));
+  [-10,0,10].forEach(v=>svg.append(svgEl('line',{x1:25,x2:695,y1:sy(v,22,330,-14,12),y2:sy(v,22,330,-14,12),class:'hero-gridline'})));
+  svg.append(svgEl('path',{d:path(ph,w,25,695,22,330,-14,12),class:'hero-wave'}));
+  const i0=ph.findIndex(x=>x>=.45),i1=ph.findIndex(x=>x>=.69);
+  svg.append(svgEl('path',{d:path(ph.slice(i0,i1),w.slice(i0,i1),sx(ph[i0],25,695),sx(ph[i1-1],25,695),22,330,-14,12),class:'hero-hot'}));
+}
+
+function axes(svg,{w=920,h=430,min=-15,max=12,x0=68,x1=900,y0=24,y1=382}={}){
+  [0,.2,.4,.6,.8,1].forEach(v=>{let x=sx(v,x0,x1);svg.append(svgEl('line',{x1:x,x2:x,y1:y0,y2:y1,class:'grid'}));addText(svg,v.toFixed(1),x,h-22,'tick')});
+  [-10,-5,0,5,10].forEach(v=>{let y=sy(v,y0,y1,min,max);svg.append(svgEl('line',{x1:x0,x2:x1,y1:y,y2:y,class:v===0?'zero':'grid'}));addText(svg,String(v),x0-10,y+4,'tick','end')});
+  addText(svg,'Normalized cardiac cycle',(x0+x1)/2,h-2,'axis-label');
+  const yt=addText(svg,'Myocardial velocity (cm/s)',14,(y0+y1)/2,'axis-label');yt.setAttribute('transform',`rotate(-90 14 ${(y0+y1)/2})`);
+}
+
+let groupMode='both';
+function drawWave(){
+  const svg=$('#waveChart'),ph=DATA.phase;svg.innerHTML='';axes(svg,{});
+  const region=svgEl('rect',{x:sx(.49,68,900),y:24,width:sx(.69,68,900)-sx(.49,68,900),height:358,class:'e-region'});svg.insertBefore(region,svg.firstChild);
+  [['No CTRCD','teal'],['CTRCD','orange']].forEach(([g,c])=>{if(groupMode!=='both'&&groupMode!==g)return;const z=DATA.waveforms[g];svg.append(svgEl('path',{d:bandPath(ph,z.mean,z.sd,68,900,24,382,-15,12),class:`band-${c}`}));svg.append(svgEl('path',{d:path(ph,z.mean,68,900,24,382,-15,12),class:`wave-${c}`}));});
+  addText(svg,'S',sx(.18,68,900),sy(9.7,24,382,-15,12),'axis-label');
+  addText(svg,"E′ region",sx(.60,68,900),sy(-12.5,24,382,-15,12),'axis-label');
+}
+$('#groupToggle')?.addEventListener('click',e=>{if(e.target.tagName!=='BUTTON')return;$$('#groupToggle button').forEach(b=>b.classList.remove('active'));e.target.classList.add('active');groupMode=e.target.dataset.group;drawWave();});
+
+function renderComponents(){
+  const box=$('#componentButtons');box.innerHTML='';DATA.components.forEach((c,i)=>{const b=document.createElement('button');b.textContent=`${i+1}. ${c.label}`;if(i===0)b.classList.add('active');b.onclick=()=>{[...box.children].forEach(x=>x.classList.remove('active'));b.classList.add('active');showComponent(i)};box.append(b)});showComponent(0);
+}
+function showComponent(i){
+  const c=DATA.components[i],d=$('#componentDetail');
+  d.innerHTML=`<h4>${c.label}</h4><p>${c.interpretation}. MTI orients this component so that higher standardized values indicate greater mechanical-transition abnormality.</p><div class="compare"><span>CTRCD median<b>${c.event_median}</b></span><span>No CTRCD median<b>${c.nonevent_median}</b></span></div>`;
+}
+
+function drawDecile(){
+  const d=+$('#decileSlider').value,z=DATA.waveforms.deciles[d-1],svg=$('#decileChart');svg.innerHTML='';axes(svg,{w:920,h:290,min:-15,max:12,x0:62,x1:900,y0:18,y1:244});
+  svg.append(svgEl('path',{d:path(DATA.phase,z.waveform,62,900,18,244,-15,12),class:'wave-teal'}));
+  const opacity=.10+.05*d;const r=svgEl('rect',{x:sx(.46,62,900),y:18,width:sx(.68,62,900)-sx(.46,62,900),height:226,fill:`rgba(229,95,42,${Math.min(opacity,.32)})`});svg.insertBefore(r,svg.firstChild);
+  $('#decileValue').textContent=d;$('#decileCaption').textContent=`Decile ${d}: n=${z.n}, median descriptive MTI ${z.median_mti.toFixed(2)}, observed CTRCD rate ${(100*z.event_rate).toFixed(1)}%. Deciles are descriptive, not clinical cutoffs.`;
+}
+$('#decileSlider')?.addEventListener('input',drawDecile);
+
+function setupMetricTabs(){$('#metricTabs')?.addEventListener('click',e=>{if(e.target.tagName!=='BUTTON')return;$$('#metricTabs button').forEach(b=>b.classList.remove('active'));e.target.classList.add('active');renderModelBars(e.target.dataset.metric);});}
+function renderModelBars(metric){
+  const el=$('#modelBars');el.innerHTML='';const label=metric==='auroc'?'AUROC':'AUPRC';
+  DATA.models.forEach(m=>{const v=m[metric];const row=document.createElement('div');row.className='model-row'+(m.model==='MTI + LVEF'?' hot':'');row.innerHTML=`<span>${m.model}</span><div class="bar-track"><div class="bar" style="width:${Math.max(4,v*100)}%"></div></div><b>${v.toFixed(3)}</b>`;el.append(row)});
+  el.setAttribute('aria-label',label+' model comparison');
+}
+
+function renderForest(){
+  const el=$('#forestPlot');el.innerHTML='';const min=.7,max=4.2;
+  DATA.cox.forEach(r=>{const row=document.createElement('div');row.className='forest-row';const pos=x=>100*(x-min)/(max-min);row.innerHTML=`<span>${r.label}</span><div class="forest-axis"><i class="forest-ci" style="left:${pos(r.lo)}%;width:${pos(r.hi)-pos(r.lo)}%"></i><i class="forest-dot" style="left:${pos(r.hr)}%"></i></div><b>${r.hr.toFixed(2)}</b>`;el.append(row)});
+}
+
+function setupRisk(){
+  const slider=$('#riskSlider');slider.addEventListener('input',()=>updateRisk(+slider.value));updateRisk(20);drawRiskChart();
+}
+function riskRow(pct){return DATA.risk_capture.find(r=>Math.round(r.fraction*100)===pct)||DATA.risk_capture[0]}
+function updateRisk(pct){const r=riskRow(pct);$('#capacityPct').textContent=pct+'%';$('#selectedN').textContent=r.selected_n;$('#capturePct').textContent=(100*r.capture).toFixed(1)+'%';$('#selectedPpv').textContent=(100*r.ppv).toFixed(1)+'%';}
+function drawRiskChart(){
+  const svg=$('#riskChart');svg.innerHTML='';const x0=62,x1=900,y0=18,y1=235;
+  [0,.25,.5,.75,1].forEach(v=>{const x=sx(v,x0,x1);svg.append(svgEl('line',{x1:x,x2:x,y1:y0,y2:y1,class:'grid'}));addText(svg,Math.round(v*100)+'%',x,270,'tick')});
+  [0,.25,.5,.75,1].forEach(v=>{const y=sy(v,y0,y1,0,1);svg.append(svgEl('line',{x1:x0,x2:x1,y1:y,y2:y,class:'grid'}));addText(svg,Math.round(v*100)+'%',x0-10,y+4,'tick','end')});
+  const x=DATA.risk_capture.map(r=>r.fraction),y=DATA.risk_capture.map(r=>r.capture);svg.append(svgEl('path',{d:path(x,y,x0,x1,y0,y1,0,1),class:'wave-teal'}));svg.append(svgEl('path',{d:`M${x0} ${y1} L${x1} ${y0}`,stroke:'#b8c6cc','stroke-dasharray':'5 5',fill:'none'}));
+  addText(svg,'Fraction selected',480,279,'axis-label');const yt=addText(svg,'Events captured',13,126,'axis-label');yt.setAttribute('transform','rotate(-90 13 126)');
+}

@@ -2,7 +2,7 @@
 
 ## Cohort
 
-- Full public BC_cardiotox cohort: **531 women, 54 CTRCD events**
+- Full BC_cardiotox cohort: **531 women, 54 CTRCD events**
 - TDI analysis cohort: **270 women, 27 CTRCD events (10.0%)**
 - Baseline LVEF >=50% TDI sensitivity cohort: **261 women, 26 events**
 - Median follow-up in the TDI cohort: **437 days**
@@ -48,4 +48,4 @@ Across Savitzky-Golay smoothing windows from 21 to 61 samples, MTI AUROC ranged 
 
 ## Important limitations
 
-The study is internally validated but not externally validated. Only 27 CTRCD events are available. The same public cohort informed MTI development and evaluation. TDI was processed in only 270/531 women, and those with TDI differed from those without processed TDI in age, anti-HER2 exposure, and follow-up duration. No GLS endpoint is available.
+The study is internally validated but not externally validated. Only 27 CTRCD events are available. The same source cohort informed MTI development and evaluation. TDI was processed in only 270/531 women, and those with TDI differed from those without processed TDI in age, anti-HER2 exposure, and follow-up duration. No GLS endpoint is available.

@@ -1,183 +1,155 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Interactive research companion for Mechanical Transition Instability in breast cancer cardio-oncology." />
-  <title>MTI · Mechanical Transition Instability</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f8fa">
+  <meta name="description" content="Interactive research companion for Mechanical Transition Instability from pretreatment Tissue Doppler Imaging in HER2-positive breast cancer.">
+  <title>MTI Cardio-Oncology · Research Companion</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 48 48"><path d="M6 26c7-13 11 11 17-2s10 12 19-6"/><circle cx="8" cy="26" r="2"/><circle cx="41" cy="18" r="2"/></svg>
+  <div class="page-glow glow-a"></div><div class="page-glow glow-b"></div>
+  <header class="site-nav">
+    <a class="brand" href="#top" aria-label="MTI home"><span class="brand-wave">∿</span><span><b>MTI</b><small>cardio-oncology</small></span></a>
+    <nav aria-label="Primary">
+      <a href="#study">Study</a><a href="#signal">Signal</a><a href="#validation">Validation</a><a href="#clinical">Clinical value</a><a href="#reproduce">Reproduce</a>
+    </nav>
+    <a class="nav-cta" href="https://github.com/rdharini2001/MTI_CardioOncology" target="_blank" rel="noopener">GitHub ↗</a>
+  </header>
+
+  <main id="top">
+    <section class="hero section-shell">
+      <div class="hero-copy reveal">
+        <div class="eyebrow"><span></span> PRETREATMENT TISSUE DOPPLER MECHANICS</div>
+        <h1>Mechanical Transition <em>Instability</em></h1>
+        <p class="hero-deck">Can the transition from systolic contraction into early relaxation reveal myocardial vulnerability <strong>before conventional systolic function declines?</strong></p>
+        <div class="hero-actions">
+          <a class="button primary" href="#signal">Explore the waveform</a>
+          <a class="button secondary" href="downloads/JCF_MTI_Brief_Report.md">Read manuscript</a>
         </div>
-        <div><strong>MTI</strong><span>cardio-oncology mechanics</span></div>
+        <div class="hero-meta"><span>531 source cohort</span><span>270 pretreatment TDI</span><span>27 CTRCD events</span></div>
       </div>
-      <nav id="nav">
-        <button class="nav-item active" data-tab="overview"><span>01</span>Overview</button>
-        <button class="nav-item" data-tab="waveforms"><span>02</span>Waveforms</button>
-        <button class="nav-item" data-tab="risk"><span>03</span>Risk enrichment</button>
-        <button class="nav-item" data-tab="methods"><span>04</span>Methods</button>
-        <button class="nav-item" data-tab="repro"><span>05</span>Reproducibility</button>
-        <button class="nav-item" data-tab="lineage"><span>06</span>SCI → MTI</button>
-      </nav>
-      <div class="side-foot">
-        <div class="status-dot"><i></i>Public-data study</div>
-        <p>Research companion · not a clinical calculator</p>
+      <div class="hero-visual reveal delay-1">
+        <div class="signal-card">
+          <div class="signal-label"><span>PRETREATMENT TDI</span><span class="live-dot"></span></div>
+          <svg id="heroWave" viewBox="0 0 720 360" role="img" aria-label="Animated pretreatment Tissue Doppler waveform"></svg>
+          <div class="signal-footer"><span>S′</span><span>systolic → relaxation transition</span><span>E′</span></div>
+        </div>
       </div>
-    </aside>
+    </section>
 
-    <main class="main">
-      <header class="topbar">
-        <div>
-          <div class="eyebrow">PRETREATMENT ECHOCARDIOGRAPHIC MECHANICS</div>
-          <h1>Mechanical Transition Instability</h1>
-          <p>Temporal myocardial vulnerability before cancer therapy-related cardiac dysfunction.</p>
-        </div>
-        <div class="top-actions">
-          <a class="ghost-btn" href="https://doi.org/10.6084/m9.figshare.22650748.v4" target="_blank" rel="noopener">Public dataset ↗</a>
-          <a class="primary-btn" id="repoLink" href="https://github.com/rdharini2001/MTI-CardioOncology" target="_blank" rel="noopener">Repository ↗</a>
-        </div>
-      </header>
+    <section class="metric-strip section-shell reveal" aria-label="Headline results">
+      <article><span>MTI AUROC</span><strong>0.695</strong><small>95% CI 0.590–0.794</small></article>
+      <article><span>MTI + LVEF AUROC</span><strong>0.712</strong><small>95% CI 0.608–0.807</small></article>
+      <article><span>Adjusted hazard</span><strong>2.20×</strong><small>per 1-SD higher MTI</small></article>
+      <article><span>Preserved LVEF</span><strong>2.22×</strong><small>adjusted hazard per 1 SD</small></article>
+    </section>
 
-      <section class="tab active" id="overview">
-        <div class="hero-grid">
-          <article class="hero-card">
-            <div class="hero-kicker">THE QUESTION</div>
-            <h2>Can a single pretreatment TDI cycle reveal myocardial vulnerability before LVEF falls?</h2>
-            <p>MTI compresses the systolic-to-relaxation transition into four interpretable timing and morphology features. Higher MTI reflects a slower, blunted, later, and attenuated transition into early relaxation.</p>
-            <div class="hero-links">
-              <button class="chip nav-jump" data-target="waveforms">Explore waveform</button>
-              <button class="chip nav-jump" data-target="risk">Test risk concentration</button>
-              <button class="chip nav-jump" data-target="lineage">See SCI lineage</button>
-            </div>
-          </article>
-          <article class="pulse-card">
-            <div class="pulse-visual" id="miniWave"></div>
-            <div class="pulse-labels"><span>S</span><span>transition</span><span>E′</span><span>A′</span></div>
-          </article>
-        </div>
+    <section id="study" class="section-shell section-block">
+      <div class="section-intro reveal"><div><div class="eyebrow"><span></span> STUDY ARCHITECTURE</div><h2>One pretreatment cycle, followed forward to cardiac outcome.</h2></div><p>Women with HER2-positive breast cancer were evaluated before potentially cardiotoxic therapy. The analysis focuses on the 270 women with a complete processed pretreatment TDI waveform and longitudinal outcome follow-up.</p></div>
+      <div class="study-flow reveal delay-1">
+        <article class="study-node"><div class="node-icon people">● ● ●</div><b>531</b><h3>Women with HER2-positive breast cancer</h3><p>University Hospital of A Coruña, 2007–2021</p></article>
+        <div class="flow-arrow">→</div>
+        <article class="study-node accent"><div class="node-icon echo">⌁</div><b>270</b><h3>Complete pretreatment TDI</h3><p>One cardiac cycle sampled over 1,001 normalized phases</p></article>
+        <div class="flow-arrow">→</div>
+        <article class="study-node hot"><div class="node-icon heart">♥</div><b>27</b><h3>Subsequent CTRCD events</h3><p>Absolute LVEF decline ≥10 percentage points to &lt;50%</p></article>
+      </div>
+      <div class="study-note reveal"><strong>Primary question</strong><span>Does pretreatment temporal myocardial mechanics identify vulnerability not apparent from chamber-level systolic function alone?</span></div>
+    </section>
 
-        <div class="metrics" id="metrics"></div>
-
-        <div class="two-col">
-          <article class="panel">
-            <div class="panel-head"><div><span class="panel-no">A</span><h3>Study architecture</h3></div><span class="tag">BC_cardiotox</span></div>
-            <div class="flow">
-              <div class="flow-node"><b>531</b><span>women with breast cancer</span></div>
-              <div class="flow-arrow">→</div>
-              <div class="flow-node accent"><b>270</b><span>pretreatment TDI cycles</span></div>
-              <div class="flow-arrow">→</div>
-              <div class="flow-node hot"><b>27</b><span>subsequent CTRCD events</span></div>
-            </div>
-            <div class="note">All waveform features are measured before therapy. Outcome is time to CTRCD.</div>
-          </article>
-          <article class="panel">
-            <div class="panel-head"><div><span class="panel-no">B</span><h3>Clinical interpretation</h3></div></div>
-            <div class="statement">MTI does not replace LVEF. It describes <em>how myocardial motion resolves in time</em>, a dimension that chamber-level systolic magnitude does not directly measure.</div>
-            <div class="mini-stats"><span><b>2.20×</b> adjusted hazard per 1-SD MTI</span><span><b>48%</b> of events in top-risk 20%</span></div>
-          </article>
-        </div>
-      </section>
-
-      <section class="tab" id="waveforms">
-        <div class="section-heading"><div><div class="eyebrow">INTERACTIVE SIGNAL VIEW</div><h2>Where does the phenotype live?</h2></div><p>Toggle outcomes, change smoothing, or move through MTI deciles. The chart uses aggregate trajectories only.</p></div>
-        <div class="chart-layout">
-          <article class="panel chart-panel">
-            <div class="chart-toolbar">
-              <div class="segmented" id="groupToggle"><button class="on" data-series="both">Both</button><button data-series="CTRCD">CTRCD</button><button data-series="No CTRCD">No CTRCD</button></div>
-              <label>Smoothing <input type="range" id="smoothSlider" min="1" max="13" step="2" value="1"><span id="smoothValue">raw aggregate</span></label>
-            </div>
-            <svg class="chart" id="waveChart" viewBox="0 0 920 430" role="img" aria-label="Pretreatment Tissue Doppler waveform chart"></svg>
-          </article>
-          <article class="panel component-panel">
-            <div class="panel-head"><div><span class="panel-no">MTI</span><h3>Four-component anatomy</h3></div></div>
-            <div class="component-list" id="componentList"></div>
-            <div class="component-detail" id="componentDetail"></div>
-          </article>
-        </div>
-        <article class="panel atlas-panel">
-          <div class="panel-head"><div><span class="panel-no">C</span><h3>Phenotype continuum</h3></div><span class="tag">descriptive MTI deciles</span></div>
-          <label class="atlas-control">MTI decile <input type="range" id="decileSlider" min="1" max="10" value="1"><b id="decileLabel">1</b></label>
-          <svg class="chart compact" id="decileChart" viewBox="0 0 920 300"></svg>
-          <p class="caption" id="decileCaption"></p>
+    <section id="signal" class="section-shell section-block">
+      <div class="section-intro reveal"><div><div class="eyebrow"><span></span> SIGNAL PHENOTYPE</div><h2>Risk information extends beyond a single E′ landmark.</h2></div><p>Toggle the outcome groups, inspect variability, and move through the MTI continuum. All trajectories are aggregate summaries of the source TDI waveforms.</p></div>
+      <div class="signal-grid">
+        <article class="panel chart-panel reveal">
+          <div class="panel-head"><div><span class="panel-index">A</span><h3>Pretreatment waveform phenotype</h3></div><div class="segmented" id="groupToggle"><button class="active" data-group="both">Both</button><button data-group="No CTRCD">No CTRCD</button><button data-group="CTRCD">CTRCD</button></div></div>
+          <svg id="waveChart" class="chart" viewBox="0 0 920 430" role="img" aria-label="Pretreatment TDI waveforms"></svg>
+          <div class="chart-caption"><span>Mean waveform ± 1 SD</span><span class="teal-key">● No CTRCD</span><span class="orange-key">● CTRCD</span></div>
         </article>
-      </section>
+        <article class="panel components reveal delay-1">
+          <div class="panel-head"><div><span class="panel-index">B</span><h3>Four interpretable transitions</h3></div><span class="small-tag">MTI</span></div>
+          <div id="componentButtons" class="component-buttons"></div>
+          <div id="componentDetail" class="component-detail"></div>
+          <div class="equation">MTI = mean of 4 oriented, training-standardized components</div>
+        </article>
+      </div>
+      <article class="panel decile-panel reveal">
+        <div class="panel-head"><div><span class="panel-index">C</span><h3>Mechanical phenotype continuum</h3></div><label>MTI decile <input id="decileSlider" type="range" min="1" max="10" value="1"><b id="decileValue">1</b></label></div>
+        <svg id="decileChart" class="chart compact" viewBox="0 0 920 290"></svg>
+        <p id="decileCaption" class="chart-caption single"></p>
+      </article>
+    </section>
 
-      <section class="tab" id="risk">
-        <div class="section-heading"><div><div class="eyebrow">HELD-OUT RISK RANKING</div><h2>What if surveillance capacity is limited?</h2></div><p>This is a risk-concentration experiment, not a treatment rule. Rankings come from repeated held-out MTI + LVEF predictions.</p></div>
-        <div class="risk-grid">
-          <article class="panel">
-            <div class="slider-readout">
-              <div><span>Intensify surveillance for top</span><strong id="fractionText">20%</strong></div>
-              <input type="range" id="riskSlider" min="5" max="100" step="5" value="20">
-            </div>
-            <div class="triage-cards"><div><span>Patients selected</span><b id="selectedN">54</b></div><div><span>Events captured</span><b id="captureText">48.1%</b></div><div><span>PPV in selected group</span><b id="ppvText">24.1%</b></div></div>
-            <svg class="chart compact" id="captureChart" viewBox="0 0 920 320"></svg>
-          </article>
-          <article class="panel">
-            <div class="panel-head"><div><span class="panel-no">D</span><h3>Why this matters</h3></div></div>
-            <div class="big-callout"><span id="capturedCount">13 of 27</span><p>future CTRCD events fall within the highest-risk 20% by cross-fitted MTI + LVEF ranking.</p></div>
-            <div class="warning">Exploratory. External validation is required before changing surveillance intensity.</div>
-          </article>
-        </div>
-        <div class="two-col">
-          <article class="panel"><div class="panel-head"><div><span class="panel-no">E</span><h3>Model comparison</h3></div></div><div id="modelBars" class="model-bars"></div></article>
-          <article class="panel"><div class="panel-head"><div><span class="panel-no">F</span><h3>Adjusted association</h3></div></div><div id="forest" class="forest"></div></article>
-        </div>
-      </section>
+    <section id="validation" class="section-shell section-block">
+      <div class="section-intro reveal"><div><div class="eyebrow"><span></span> HELD-OUT VALIDATION</div><h2>MTI was evaluated against conventional and data-driven comparators.</h2></div><p>Standardization and model fitting were restricted to training folds across 100 repeated stratified 5-fold partitions. The combined MTI + LVEF model had the highest primary discrimination point estimates, but superiority over LVEF was not established.</p></div>
+      <div class="validation-grid">
+        <article class="panel reveal">
+          <div class="panel-head"><div><span class="panel-index">D</span><h3>Cross-fitted discrimination</h3></div><div class="metric-tabs" id="metricTabs"><button class="active" data-metric="auroc">AUROC</button><button data-metric="auprc">AUPRC</button></div></div>
+          <div id="modelBars" class="model-bars"></div>
+          <p class="micro-note">Primary held-out predictions. Comparator ranking is descriptive; confidence intervals and paired uncertainty govern inference.</p>
+        </article>
+        <article class="panel reveal delay-1">
+          <div class="panel-head"><div><span class="panel-index">E</span><h3>Time-to-event association</h3></div><span class="small-tag">HR per 1 SD</span></div>
+          <div id="forestPlot" class="forest"></div>
+          <p class="micro-note">The association persisted after adjustment for baseline LVEF and in women with preserved baseline LVEF.</p>
+        </article>
+      </div>
+      <div class="inference-callout reveal"><div><strong>0.037</strong><span>paired C-index difference<br>MTI + LVEF vs LVEF</span></div><div class="ci-track"><i style="left:20%"></i><i class="zero" style="left:42%"></i><i style="left:80%"></i><span>95% CI −0.059 to 0.137</span></div><p>Point estimates favored the combined model, but the interval crossed zero.</p></div>
+    </section>
 
-      <section class="tab" id="methods">
-        <div class="section-heading"><div><div class="eyebrow">ANALYSIS PIPELINE</div><h2>Interpretable by construction</h2></div><p>The score is deliberately simple: four oriented features, training-fold standardization, equal weights.</p></div>
-        <div class="method-grid">
-          <article class="panel method-step"><span>01</span><h3>Normalize one cycle</h3><p>Each public TDI trajectory is represented on 1,001 phases from 0 to 1.</p></article>
-          <article class="panel method-step"><span>02</span><h3>Landmark motion</h3><p>Identify S peak, systolic zero crossing, and the subsequent E′ nadir after Savitzky-Golay smoothing.</p></article>
-          <article class="panel method-step"><span>03</span><h3>Describe transition</h3><p>Measure slope deficit, curvature deficit, early-relaxation latency, and E′ attenuation.</p></article>
-          <article class="panel method-step"><span>04</span><h3>Validate without leakage</h3><p>Standardize and fit only in training folds across 100 repeated stratified 5-fold partitions.</p></article>
+    <section id="clinical" class="section-shell section-block">
+      <div class="section-intro reveal"><div><div class="eyebrow"><span></span> CLINICAL RISK ENRICHMENT</div><h2>Where could a temporal mechanics signal add value?</h2></div><p>These analyses are exploratory. They illustrate risk concentration and incremental information; they do not define a clinical MTI cutoff or surveillance rule.</p></div>
+      <div class="clinical-grid">
+        <article class="panel reveal">
+          <div class="panel-head"><div><span class="panel-index">F</span><h3>Surveillance capacity experiment</h3></div><span class="small-tag">held-out MTI + LVEF ranking</span></div>
+          <div class="capacity"><span>Intensify surveillance for the top</span><strong id="capacityPct">20%</strong></div>
+          <input id="riskSlider" class="wide-range" type="range" min="5" max="100" step="5" value="20">
+          <div class="capacity-stats"><div><span>selected</span><b id="selectedN">54</b></div><div><span>events captured</span><b id="capturePct">48.1%</b></div><div><span>PPV</span><b id="selectedPpv">24.1%</b></div></div>
+          <svg id="riskChart" class="chart compact" viewBox="0 0 920 280"></svg>
+        </article>
+        <article class="panel reveal delay-1">
+          <div class="panel-head"><div><span class="panel-index">G</span><h3>Preserved baseline LVEF</h3></div><span class="small-tag">LVEF ≥50%</span></div>
+          <div class="preserved-visual"><div class="ring high"><span><b>18.1%</b><small>15 / 83</small></span></div><div class="vs">vs</div><div class="ring lower"><span><b>6.2%</b><small>11 / 178</small></span></div></div>
+          <div class="preserved-labels"><span>highest MTI tertile</span><span>lower two tertiles</span></div>
+          <div class="hr-chip"><b>HR 3.38</b><span>LVEF-adjusted · 95% CI 1.55–7.38</span></div>
+        </article>
+      </div>
+      <article class="panel added-panel reveal">
+        <div class="panel-head"><div><span class="panel-index">H</span><h3>Exploratory 1-year added value</h3></div><span class="small-tag">172 women · 16 events</span></div>
+        <div class="added-grid">
+          <div class="delta-card"><span>AUROC</span><div><b>0.652</b><i>→</i><strong>0.698</strong></div><small>LVEF → LVEF + MTI</small></div>
+          <div class="delta-card"><span>Clinical AUROC</span><div><b>0.618</b><i>→</i><strong>0.653</strong></div><small>Clinical → Clinical + MTI</small></div>
+          <div class="delta-card"><span>Continuous NRI</span><div><strong>+0.378</strong></div><small>95% CI −0.122 to 0.869</small></div>
+          <div class="delta-card"><span>IDI</span><div><strong>+0.015</strong></div><small>95% CI −0.003 to 0.034</small></div>
+          <div class="delta-card"><span>Net benefit at 10%</span><div><b>0.014</b><i>→</i><strong>0.032</strong></div><small>LVEF → LVEF + MTI</small></div>
         </div>
-        <article class="panel equation-card"><div class="equation">MTI = ¼ ( z<sub>slope</sub> + z<sub>curvature</sub> + z<sub>latency</sub> + z<sub>E′ attenuation</sub> )</div><p>All components are oriented so higher values indicate greater mechanical-transition abnormality.</p></article>
-        <div class="two-col">
-          <article class="panel"><h3>Primary inferential target</h3><p>Time to CTRCD using Cox proportional hazards models. Effect size is HR per 1-SD higher MTI.</p><ul><li>MTI alone</li><li>MTI + baseline LVEF</li><li>Age + LVEF adjustment</li><li>Treatment-adjusted complete-case sensitivity</li></ul></article>
-          <article class="panel"><h3>Robustness</h3><ul><li>Preserved baseline LVEF ≥50%</li><li>Smoothing windows 21 to 61 samples</li><li>Leave-one-component-out analyses</li><li>Whole-waveform functional permutation testing</li><li>Continuous spline test for nonlinearity</li></ul></article>
-        </div>
-      </section>
+        <div class="warning-note">Reclassification confidence intervals crossed zero. These results are hypothesis-generating and require external prospective validation.</div>
+      </article>
+    </section>
 
-      <section class="tab" id="repro">
-        <div class="section-heading"><div><div class="eyebrow">REPRODUCIBILITY</div><h2>Every plotted value traces back to code.</h2></div><p>No patient-level BC_cardiotox data are redistributed in the repository.</p></div>
-        <div class="repro-grid">
-          <article class="panel repo-card"><h3>Current MTI repository</h3><p>Analysis scripts, repeated cross-validation, bootstrap inference, figure code, manuscript, and this interactive companion.</p><a href="https://github.com/rdharini2001/MTI-CardioOncology" target="_blank" rel="noopener">github.com/rdharini2001/MTI-CardioOncology ↗</a></article>
-          <article class="panel repo-card"><h3>Public source data</h3><p>BC_cardiotox is a 531-woman breast cancer cardiotoxicity dataset. The repository provides a downloader path, not a copy of patient-level data.</p><a href="https://doi.org/10.6084/m9.figshare.22650748.v4" target="_blank" rel="noopener">Figshare dataset ↗</a></article>
-          <article class="panel repo-card"><h3>Manuscript outputs</h3><p>JCF-ready blinded manuscript, one multipanel table, two high-resolution multipanel figures, and figure legends.</p><a href="downloads/JCF_MTI_Brief_Report.md">Read manuscript source</a></article>
-        </div>
-        <article class="panel code-block"><pre><code>python -m venv .venv
+    <section class="section-shell section-block figures-section">
+      <div class="section-intro reveal"><div><div class="eyebrow"><span></span> CODE-GENERATED FIGURES</div><h2>Every scientific panel traces back to analysis code.</h2></div><p>The website uses aggregate JSON for interaction. Manuscript figures are generated independently from the analysis pipeline and stored with the repository.</p></div>
+      <div class="figure-gallery reveal">
+        <a href="downloads/Figure1_JCF_MTI_mechanism.png"><img src="downloads/Figure1_JCF_MTI_mechanism.png" alt="MTI mechanism figure"><span>Figure 1 · Mechanical phenotype</span></a>
+        <a href="downloads/Figure2_JCF_MTI_clinical.png"><img src="downloads/Figure2_JCF_MTI_clinical.png" alt="MTI clinical validation figure"><span>Figure 2 · Clinical validation</span></a>
+      </div>
+    </section>
+
+    <section id="reproduce" class="section-shell section-block">
+      <div class="section-intro reveal"><div><div class="eyebrow"><span></span> REPRODUCIBILITY</div><h2>From source cohort to figure, with a documented path.</h2></div><p>Patient-level BC_cardiotox data are not redistributed. The repository contains code, aggregate results, held-out predictions, figure-generation scripts, and the final manuscript source.</p></div>
+      <div class="repro-grid reveal">
+        <article><span>01</span><h3>Download source data</h3><p>Obtain BC_cardiotox from the original Figshare release under CC BY 4.0.</p><a href="https://doi.org/10.6084/m9.figshare.22650748.v4" target="_blank" rel="noopener">Dataset ↗</a></article>
+        <article><span>02</span><h3>Run analysis</h3><p>Feature extraction, Cox models, repeated held-out prediction, sensitivity analyses, and figure data are code-defined.</p><a href="https://github.com/rdharini2001/MTI_CardioOncology/tree/main/src" target="_blank" rel="noopener">Source code ↗</a></article>
+        <article><span>03</span><h3>Audit outputs</h3><p>Aggregate tables, cross-fitted predictions, figures, and manuscript source are versioned together.</p><a href="https://github.com/rdharini2001/MTI_CardioOncology/tree/main/results" target="_blank" rel="noopener">Results ↗</a></article>
+      </div>
+      <pre class="code reveal"><code>python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-# download the public BC_cardiotox CSV into data/
-python src/run_analysis.py
-python src/nature_figures_extended.py --bootstrap 5000 --permutations 5000
-python src/build_site_data.py</code></pre></article>
-      </section>
+bash reproduce.sh</code></pre>
+    </section>
+  </main>
 
-      <section class="tab" id="lineage">
-        <div class="section-heading"><div><div class="eyebrow">CONCEPTUAL LINEAGE</div><h2>Same question, different echocardiographic representation.</h2></div><p>The earlier SCI work is retained as project history only. Its EchoRisk results are not evidence for the current manuscript.</p></div>
-        <div class="lineage-grid">
-          <article class="panel legacy-card">
-            <span class="legacy-badge">LEGACY CONCEPT</span><h3>Systolic Completion Instability</h3><p>2D apical 4-chamber cine → LV cavity geometry over time.</p><div class="signal-icon cavity"><i></i><i></i><i></i><i></i></div><ul><li>Residual post-systolic narrowing</li><li>Delayed completion burden</li><li>Regional heterogeneity</li><li>Delayed segment fraction</li></ul><a href="https://github.com/rdharini2001/EchoRisk" target="_blank" rel="noopener">Previous SCI repository ↗</a>
-          </article>
-          <div class="lineage-arrow"><span>shared premise</span>→<b>temporal mechanical vulnerability</b>→</div>
-          <article class="panel current-card">
-            <span class="current-badge">CURRENT PUBLIC-DATA STUDY</span><h3>Mechanical Transition Instability</h3><p>Tissue Doppler echocardiography → myocardial velocity over time.</p><div class="signal-icon wave"><svg viewBox="0 0 120 38"><path d="M0 20 C12 20 10 2 25 5 C40 8 37 22 48 21 C61 20 55 36 70 33 C85 29 82 17 93 20 C104 22 104 35 120 27"/></svg></div><ul><li>Transition slope deficit</li><li>Transition curvature deficit</li><li>Early-relaxation latency</li><li>E′ attenuation</li></ul><button class="chip nav-jump" data-target="overview">Current evidence</button>
-          </article>
-        </div>
-        <div class="lineage-note"><strong>What is preserved?</strong> Both approaches use echocardiography to ask whether abnormal temporal mechanics precede conventional systolic dysfunction. SCI emphasized spatially heterogeneous cavity completion; MTI uses a temporal TDI surrogate because it is the reproducible signal available in the fully public cohort.</div>
-      </section>
-
-      <footer><span>MTI research companion · exploratory research use only</span><span>BC_cardiotox · CC BY 4.0 · analysis version 2026-10-22</span></footer>
-    </main>
-  </div>
+  <footer class="footer"><div><b>Mechanical Transition Instability</b><span>Interpretation: complementary baseline risk information, not a validated clinical decision rule.</span></div><div><a href="https://github.com/rdharini2001/MTI_CardioOncology">Repository</a><a href="https://doi.org/10.6084/m9.figshare.22650748.v4">Dataset</a><a href="downloads/JCF_MTI_Brief_Report.md">Manuscript</a></div></footer>
   <script src="app.js"></script>
 </body>
 </html>
