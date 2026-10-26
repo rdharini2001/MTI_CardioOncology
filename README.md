@@ -10,7 +10,7 @@
 
 </div>
 
-<p align="center"><img src="results/figures/Figure1_JCF_MTI_mechanism.png" alt="Mechanical Transition Instability study framework" width="980"></p>
+<p align="center"><img src="MTI.png" alt="Mechanical Transition Instability study framework" width="980"></p>
 
 ## Overview
 
