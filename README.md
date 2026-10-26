@@ -1,8 +1,6 @@
 <div align="center">
 
-# Pretreatment Tissue Doppler Mechanical Transition Instability
-
-### Subsequent cancer therapy-related cardiac dysfunction in HER2-positive breast cancer
+# Pretreatment Tissue Doppler Mechanical Transition Instability for subsequent cancer therapy-related cardiac dysfunction prediction in HER2-positive breast cancer
 
 **BC_cardiotox cohort · interpretable temporal myocardial mechanics · repeated held-out validation**
 
